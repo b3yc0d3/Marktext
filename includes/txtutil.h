@@ -1,5 +1,5 @@
-#ifndef txtutil_h
-#define txtutil_h
+#ifndef MARKTEXT_TXTUTIL_H
+#define MARKTEXT_TXTUTIL_H
 
 #include <string>
 

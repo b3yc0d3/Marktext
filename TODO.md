@@ -1,6 +1,6 @@
 ### Marktext Typeset Functions
 - [ ] Command Line Options
-- [ ] Lexer
+- [X] Lexer
 - [ ] Error Handling
 - [ ] Error Messages
 - [ ] Parser for Plaintext (ITEF flavored)
