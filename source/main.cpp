@@ -11,10 +11,12 @@
 #include <memory>
 #include <vector>
 #include <fstream>
-
+// Utils
 #include "../includes/lexer.h"
 #include "../includes/txtutil.h"
 #include "../includes/version.h"
+// Parser
+#include "../includes/parsers/plaintext.h"
 
 #define DEBUG false
 
@@ -121,21 +123,30 @@ int main()
                   << VERSION_PATCH << "\n";
     }
 
-    std::vector<Token> tokens;
 
     std::fstream in("./data/example.mt");
     std::string fContents((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>());
+
+    std::vector<Token> tokens;
+    std::string document;
 
     {
         std::unique_ptr<Lexer> lexer = std::make_unique<Lexer>();
         tokens = lexer->run(fContents);
     }
 
+    {
+        std::unique_ptr<PlaintextParser> ptParser = std::make_unique<PlaintextParser>();
+        document = ptParser->parse(tokens);
+    }
+
+    std::cout << document << "\n";
+
     // just for testing
-    for (Token &i : tokens)
+    /*for (Token &i : tokens)
     {
         std::cout << "D] " << tType2Str(i.type) << " :: " << i.value << "\n";
-    }
+    }*/
 
     return 0;
 }

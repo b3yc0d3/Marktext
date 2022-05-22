@@ -14,7 +14,7 @@ namespace txtutil
      *
      * @see https://stackoverflow.com/a/4654718
      */
-    bool is_number(const std::string &iText);
+    bool isNumber(const std::string &iText);
 
     /**
      * @brief Converts Token Type to String

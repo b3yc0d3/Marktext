@@ -7,7 +7,7 @@ INCL_DIR	= includes
 LIB_DIR		= libs
 OUT_DIR		= build
 
-SRC_FILES	= $(wildcard $(SRC_DIR)/*.cpp)
+SRC_FILES	= $(wildcard $(SRC_DIR)/*.cpp) $(wildcard $(SRC_DIR)/parsers/*.cpp)
 
 marktext:
 	mkdir -p $(OUT_DIR)
