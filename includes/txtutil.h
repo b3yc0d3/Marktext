@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <algorithm>
 
 namespace txtutil
 {
@@ -85,6 +86,22 @@ namespace txtutil
      * @see https://stackoverflow.com/a/46931770
      */
     std::vector<std::string> split_str(const std::string &str, const std::string &delimiter);
+
+    template <typename T>
+    bool vector_contains(const std::vector<T> &vec, const T &val)
+    {
+        return std::count(vec.begin(), vec.end(), val);
+    }
+
+    /**
+     * @brief Check if String starts with specific Char
+     *
+     * @param var Variable to check
+     * @param text Text to check
+     * @return true
+     * @return false
+     */
+    bool strswi(const std::string &var, const std::string &text);
 }
 
 #endif

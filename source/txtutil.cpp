@@ -132,4 +132,9 @@ namespace txtutil
         res.push_back(str.substr(pos_start));
         return res;
     }
+
+    bool strswi(const std::string &var, const std::string &text)
+    {
+        return (var.rfind(text, 0) == 0);
+    }
 }

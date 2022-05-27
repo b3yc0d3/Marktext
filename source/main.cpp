@@ -112,8 +112,21 @@ const std::string tType2Str(const TokenType &tType)
     }
 }
 
-int main()
+void print_usage()
 {
+    std::cout << "Usage: mtt [options] <INPUT_FILE_PATH>\n"
+              << "Options:\n"
+              << "   -F <pt>           Set the output format.\n"
+              << "   --version         Shows this message.\n"
+              << "   --help            Shows version of Marktext.\n\n"
+              << "Positional Patameter:\n"
+              << "   INPUT_FILE_PATH   File path to Input file."
+              << "\n";
+}
+
+int main(int argc, char **argv)
+{
+    const char *filePath;
     // TODO: Command line Arguments
     if (DEBUG)
     {
@@ -125,7 +138,59 @@ int main()
                   << "\n";
     }
 
-    std::fstream in("./data/example.mt");
+    if (argc <= 1)
+    {
+        print_usage();
+        exit(EXIT_SUCCESS);
+    }
+
+    std::vector<std::string> args;
+    for (int i = 0; i < argc; i++)
+    {
+        std::string tmp = std::string(argv[i]);
+        if (tmp.find("=") != std::string::npos)
+        {
+            std::vector<std::string> parts = txtutil::split_str(tmp, "=");
+
+            for (size_t i = 0; i < parts.size(); i++)
+            {
+                args.push_back(parts[i]);
+            }
+        }
+        else
+        {
+            args.push_back(tmp);
+        }
+    }
+
+    if (txtutil::vector_contains<std::string>(args, "--version"))
+    {
+        std::cout << "Marktext "
+                  << "v"
+                  << VERSION_MAJOR
+                  << "."
+                  << VERSION_MINOR
+                  << "."
+                  << VERSION_PATCH
+                  << "-"
+                  << VERSION_PRE_RELEASE
+                  << "\n";
+
+        exit(EXIT_SUCCESS);
+    }
+
+    if (txtutil::vector_contains<std::string>(args, "--help"))
+    {
+        print_usage();
+        exit(EXIT_SUCCESS);
+    }
+
+    if (!txtutil::strswi(args.back().c_str(), "-"), !txtutil::strswi(args.back().c_str(), "--"))
+    {
+        filePath = args.back().c_str();
+    }
+
+    std::fstream in(filePath);
     std::string fContents((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>());
 
     std::vector<Token> tokens;
@@ -144,12 +209,6 @@ int main()
     std::cout << txtutil::repeat("#", 72)
               << "\n"
               << document << "\n";
-
-    // just for testing
-    /*for (Token &i : tokens)
-    {
-        std::cout << "D] " << tType2Str(i.type) << " :: " << i.value << "\n";
-    }*/
 
     return 0;
 }
