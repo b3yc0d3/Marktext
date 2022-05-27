@@ -10,11 +10,6 @@ void Storage::setRegister(std::string key, std::string value)
     this->registers.insert(std::make_pair(key, value));
 }
 
-void Storage::setVariable(std::string key, std::string value)
-{
-    this->variables.insert(std::make_pair(key, value));
-}
-
 /**
  * Getter
  */
@@ -31,16 +26,5 @@ std::string Storage::getRegister(std::string key)
     }
 }
 
-std::string Storage::getVariable(std::string key)
-{
-    if (this->variables.count(key))
-    {
-        return this->variables[key];
-    }
-    else
-    {
-        return NULL;
-    }
-}
 
 Storage::~Storage() {}

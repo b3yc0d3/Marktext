@@ -3,7 +3,15 @@
 ![GNU Make: 4.3](https://img.shields.io/badge/gnu%20make-4.3-lightgrey)
 ![Platforms: Linux, BSD](https://img.shields.io/badge/platform-linux%20%7C%20bsd-blue)
 
-The new begin of my old Project `oroff`
+Marktext is strongly inspired by AT&Ts Troff Typeset.<br>
+Modernized Typeset to create easily pretty Formatted Text Files.<br>
+*( The new begin of my old Project `oroff`. )*
+
+## Features
+Can be exported to:
+  - Plaintext
+  - ~~HTML~~
+  - ~~Markdown~~
 
 ## Use Code Style
 - Types start with upper case: `MyClass`

@@ -120,9 +120,10 @@ int main()
         std::cout << "Marktext v"
                   << VERSION_MAJOR << "."
                   << VERSION_MINOR << "."
-                  << VERSION_PATCH << "\n";
+                  << VERSION_PATCH << "-"
+                  << VERSION_PRE_RELEASE
+                  << "\n";
     }
-
 
     std::fstream in("./data/example.mt");
     std::string fContents((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>());
@@ -140,7 +141,9 @@ int main()
         document = ptParser->parse(tokens);
     }
 
-    std::cout << document << "\n";
+    std::cout << txtutil::repeat("#", 72)
+              << "\n"
+              << document << "\n";
 
     // just for testing
     /*for (Token &i : tokens)

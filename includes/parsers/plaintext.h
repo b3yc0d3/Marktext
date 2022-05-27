@@ -18,6 +18,7 @@ private:
     bool isBoL; // True if Begon of Line
     std::string document;
     unsigned int index;
+    std::string tmpParagraph;
 
 public:
     PlaintextParser();
@@ -33,37 +34,34 @@ public:
      * 
      * @return Token 
      */
-    Token preview();
+    Token peek();
 
     /**
      * @brief Get value of Current Token
      * 
      * @return std::string 
      */
-    std::string cValue()
-    {
-        if(this->cur_token.value == "NULL")
-        {
-            return "NULL";
-        }
-
-        return this->cur_token.value;
-    }
+    std::string cValue();
 
     /**
      * @brief Get Type of Current Token
      *
      * @return Token
      */
-    TokenType cType()
-    {
-        if (this->cur_token.value == "NULL")
-        {
-            //return "NULL";
-        }
+    TokenType cType();
 
-        return this->cur_token.type;
-    }
+    /**
+     * @brief Get the Complete Line object
+     *
+     * @return std::string
+     */
+    std::string getCompleteLine();
+
+    /**
+     * @brief Go to Next line
+     * 
+     */
+    void nextLine();
 
     /**
      * @brief Parse given Tokens
@@ -72,6 +70,28 @@ public:
      * @return std::string 
      */
     std::string parse(std::vector<Token> &tokens);
+
+    /**
+     * @brief Get text untill certain Char or Token Type
+     * 
+     * @param token 
+     * @return std::vector<std::string> 
+     */
+    std::string getTill(TokenType token);
+
+    /**
+     * @brief Append Temporeral Paragraph
+     * 
+     * @param value Value to Append
+     */
+    void appendTmpParagraph(const std::string &value);
+
+    /**
+     * @brief Dump Temporeral Paragraph
+     *
+     * This functions adds the temporeral Paragraph to the Document
+     */
+    void dumpTmpParagraph();
 
     ~PlaintextParser();
 };

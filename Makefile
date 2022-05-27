@@ -1,21 +1,25 @@
-CXX=g++
-CXXFLAGS= -std=c++17 -Wall -Wextra -pedantic
-LIBFLAGS=
+SHELL 		:= /bin/sh
+
+CXX 		= g++
+CXXFLAGS	= -std=c++17 -Wall -Wextra -pedantic
+LIBFLAGS	=
 
 SRC_DIR		= source
 INCL_DIR	= includes
 LIB_DIR		= libs
-OUT_DIR		= build
+BUILD_DIR   = build
+OBJECT_DIR	= objects
 
-SRC_FILES	= $(wildcard $(SRC_DIR)/*.cpp) $(wildcard $(SRC_DIR)/parsers/*.cpp)
+rwildcard=$(foreach d,$(wildcard $(1:=/*)),$(call rwildcard,$d,$2) $(filter $(subst *,%,$2),$d))
+SRC_FILES = $(call rwildcard,$(SRC_DIR),*.cpp)
 
 marktext:
-	mkdir -p $(OUT_DIR)
-	$(CXX) $(CXXFLAGS) $(LIBFLAGS) -o $(OUT_DIR)/mtt $(SRC_FILES)
+	mkdir -p $(BUILD_DIR)
+	$(CXX) $(CXXFLAGS) $(LIBFLAGS) -o $(BUILD_DIR)/mtt $(SRC_FILES)
 
 debug:
-	mkdir -p $(OUT_DIR)
-	$(CXX) -g $(CXXFLAGS) $(LIBFLAGS) -o $(OUT_DIR)/mtt $(SRC_FILES)
+	mkdir -p $(BUILD_DIR)
+	$(CXX) -g $(CXXFLAGS) $(LIBFLAGS) -o $(BUILD_DIR)/mtt $(SRC_FILES)
 
 valgrind:
-	valgrind --leak-check=yes $(OUT_DIR)/mtt
+	valgrind --leak-check=yes $(BUILD_DIR)/mtt

@@ -2,6 +2,7 @@
 #define MARKTEXT_TXTUTIL_H
 
 #include <string>
+#include <vector>
 
 namespace txtutil
 {
@@ -17,110 +18,73 @@ namespace txtutil
     bool isNumber(const std::string &iText);
 
     /**
-     * @brief Converts Token Type to String
-     * 
-     * @param tType 
-     * @return const std::string& 
+     * @brief Text to lower case
+     *
+     * @param iText Input Text
+     * @return std::string
      */
-    /*const std::string &tType2Str(const TokenType &tType)
-    {
-        std::string retStr;
+    std::string str2lower(std::string iText);
 
-        switch (tType)
-        {
-        case TokenType::Apostrophe:
-        {
-            retStr = "Apostrophe";
-        }
-        break;
-
-        case TokenType::CRLF:
-        {
-            retStr = "CRLF";
-        }
-        break;
-
-        case TokenType::DollarSign:
-        {
-            retStr = "DollarSign";
-        }
-        break;
-
-        case TokenType::FullStop:
-        {
-            retStr = "FullStop";
-        }
-        break;
-
-        case TokenType::LeftCurlyBracket:
-        {
-            retStr = "LeftCurlyBracket";
-        }
-        break;
-
-        case TokenType::Number:
-        {
-            retStr = "Number";
-        }
-        break;
-
-        case TokenType::QuotationMark:
-        {
-            retStr = "QuotationMark";
-        }
-        break;
-
-        case TokenType::ReverseSolidus:
-        {
-            retStr = "ReverseSolidus";
-        }
-        break;
-
-        case TokenType::RightCurlyBracket:
-        {
-            retStr = "RightCurlyBracket";
-        }
-        break;
-
-        case TokenType::Text:
-        {
-            retStr = "Text";
-        }
-        break;
-
-        case TokenType::Tilde:
-        {
-            retStr = "Tilde";
-        }
-        break;
-
-        case TokenType::Whitespace:
-        {
-            retStr = "Whitespace";
-        }
-        break;
-
-        default:
-            {
-                retStr = "Unkown";
-            }
-            break;
-        }
-
-        return retStr;
-    }*/
+    // ##########################################
 
     /**
-     * @brief Converts String to Integer
+     * @brief Repeat string
      *
-     * @param str
-     * @param h
-     * @return constexpr unsigned int
+     * Repeat X char(s) Y given times
+     *
+     * @param input String to repeat
+     * @param num How often to repeat
+     * @return std::string
      */
-    /*constexpr unsigned int str2int(const char *str, int h = 0)
-    {
-        return !str[h] ? 5381 : (str2int(str, h + 1) * 33) ^ str[h];
-    }*/
+    std::string repeat(const std::string &input, unsigned int num);
+
+    /**
+     * @brief Centers Text
+     *
+     * Centers given text X in length of Y, and fills the space with fille Z
+     *
+     * @param text Text to Center
+     * @param fChar Filler char
+     * @param length Length to center in
+     * @return std::string
+     */
+    std::string center(std::string text, const std::string &fChar, unsigned int length);
+
+    /**
+     * @brief Create Title
+     * 
+     * e.g.: "Left text                     Center text                     Right Text"
+     * 
+     * @param parts Parts
+     * @param length Line Length
+     * @return std::string 
+     */
+    std::string title3Part(const std::string parts[3], unsigned int length);
+
+    // ##########################################
+
+    /**
+     * @brief Wraps word to specifc length
+     *
+     * @param text Input text
+     * @param line_length Length to wrap in
+     * @return std::string
+     *
+     * @see https://www.cplusplus.com/forum/beginner/132223/#msg714543
+     * @see https://ideone.com/wai9da
+     */
+    std::string word_wrap(std::string text, int line_length);
+
+    /**
+     * @brief Splits string at specific char(s)
+     *
+     * @param str Input string
+     * @param delimiter Delimiter Char(s)
+     * @return std::vector<std::string>
+     *
+     * @see https://stackoverflow.com/a/46931770
+     */
+    std::vector<std::string> split_str(const std::string &str, const std::string &delimiter);
 }
 
 #endif

@@ -14,3 +14,7 @@ In this file you will find Maintainers of parts in this Project
 
 ## Lexer
 - b3yc0d3 b3yc0d3@gmail.com
+
+## Parsers
+### Plaintext
+- b3yc0d3 b3yc0d3@gmail.com
