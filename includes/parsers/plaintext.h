@@ -64,6 +64,13 @@ public:
     void nextLine();
 
     /**
+     * @brief Skip text untill given Token Type
+     * 
+     * @param token 
+     */
+    void skipTill(TokenType token);
+
+    /**
      * @brief Parse given Tokens
      * 
      * @param tokens Token Vector 

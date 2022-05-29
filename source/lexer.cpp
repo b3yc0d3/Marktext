@@ -53,6 +53,13 @@ std::vector<Token> Lexer::run(const std::string &rText)
         }
         break;
 
+        case str2int("*"): // Asterisk
+        {
+            this->dumpTmpStr();
+            this->add(TokenType::Asterisk, &c);
+        }
+        break;
+
         case str2int("\n"):
         case str2int("\r"): // CRLF
         case str2int("\r\n"):
@@ -94,6 +101,13 @@ std::vector<Token> Lexer::run(const std::string &rText)
         {
             this->dumpTmpStr();
             this->add(TokenType::ReverseSolidus, &c);
+        }
+        break;
+
+        case str2int("/"):  // Solidus
+        {
+            this->dumpTmpStr();
+            this->add(TokenType::Solidus, &c);
         }
         break;
 

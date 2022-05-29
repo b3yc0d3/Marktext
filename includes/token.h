@@ -10,6 +10,7 @@
 enum TokenType
 {
     Apostrophe,         // '
+    Asterisk,           // *
     CRLF,               // \r \n or \r\n
     DollarSign,         // $
     FullStop,           // .
@@ -17,6 +18,7 @@ enum TokenType
     Number,             // 0-9
     QuotationMark,      // "
     ReverseSolidus,     // "\"
+    Solidus,            // /
     RightCurlyBracket,  // }    [not used yet]
     Text,               // Everything thats not listed here
     Tilde,              // ~

@@ -43,7 +43,7 @@ void PlaintextParser::next()
 
 Token PlaintextParser::peek()
 {
-    if ((this->index + 1) > this->tokens.size())
+    if ((this->index + 1) < this->tokens.size())
     {
         return this->tokens[this->index + 1];
     }
@@ -115,6 +115,23 @@ void PlaintextParser::nextLine()
     this->next();
 }
 
+void PlaintextParser::skipTill(TokenType token)
+{
+    bool doIt = true;
+
+    while (doIt)
+    {
+        if (this->cType() == token)
+        {
+            doIt = false;
+        }
+        else
+        {
+            this->next();
+        }
+    }
+}
+
 std::string PlaintextParser::getTill(TokenType token)
 {
     bool doIt = true;
@@ -177,21 +194,49 @@ std::string PlaintextParser::parse(std::vector<Token> &tokens)
     while (this->cur_token.value != "NULL")
     {
 
+        if (this->cType() == TokenType::Solidus)
+        {
+            switch (this->peek().type)
+            {
+            case Solidus:
+            {
+                this->nextLine();
+                this->next();
+            }
+            break;
+
+            case Asterisk:
+            {
+                int doIt = true;
+                while (doIt)
+                {
+                    if (this->cType() == TokenType::Asterisk && this->peek().type == TokenType::Solidus)
+                    {
+                        doIt = false;
+                        this->next();
+                        this->next();
+                    }
+                    else
+                    {
+                        this->next();
+                    }
+                }
+                printf("D] COMMENT BLOCK\n");
+            }
+            break;
+
+            default:
+            {
+                this->document.append(this->cValue());
+            }
+            break;
+            }
+        }
+
         // Check if it's Begin of Line and if it's a FullStop ('.')
         if (this->isBoL && this->cType() == TokenType::FullStop)
         {
             this->next();
-
-            // Check if line is a Comment (.\"<VALUE>)
-            if (this->cType() == TokenType::ReverseSolidus)
-            {
-                this->next();
-
-                if (this->cType() == TokenType::QuotationMark)
-                {
-                    this->getCompleteLine();
-                }
-            }
 
             switch (str2int(txtutil::str2lower(this->cValue()).c_str()))
             {

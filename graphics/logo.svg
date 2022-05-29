@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="88"
+   height="88"
+   viewBox="0 0 88 88"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04, custom)"
+   sodipodi:docname="logo.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="px"
+     showgrid="false"
+     inkscape:zoom="4.7619222"
+     inkscape:cx="52.184809"
+     inkscape:cy="43.154842"
+     inkscape:window-width="1366"
+     inkscape:window-height="744"
+     inkscape:window-x="1366"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1"
+     inkscape:object-paths="false"
+     inkscape:snap-smooth-nodes="false" />
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="fill:#ffffff;stroke:#000000;stroke-width:8;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;paint-order:stroke fill markers"
+       id="rect2955"
+       width="76"
+       height="41.537998"
+       x="6.0000005"
+       y="23.231001"
+       ry="2.9008818" />
+    <g
+       id="g3468"
+       transform="translate(-24.901075,-10.142241)">
+      <g
+         aria-label="MT"
+         id="text19118"
+         style="font-size:42.0775px;line-height:1.25;stroke-width:1.05194">
+        <path
+           d="M 75.906953,68.827286 71.488815,39.373036 H 63.409936 L 56.425071,55.404563 49.482283,39.373036 h -8.120957 l -4.460215,29.45425 h 8.24719 l 2.272185,-16.915155 7.784337,16.99931 h 2.398418 l 7.826415,-17.041387 2.272184,16.957232 z"
+           style="font-weight:900;font-family:Mont;-inkscape-font-specification:'Mont Heavy'"
+           id="path3344" />
+        <path
+           d="M 100.90104,39.373036 H 76.748556 v 7.321485 h 7.994725 v 22.132765 h 8.163035 V 46.694521 h 7.994724 z"
+           style="font-weight:900;font-family:Mont;-inkscape-font-specification:'Mont Heavy'"
+           id="path3346" />
+      </g>
+    </g>
+  </g>
+</svg>

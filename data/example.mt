@@ -1,16 +1,14 @@
-.dv NAME some Values
 .nr LL 72
+.nr AUTHOR "b3y0cd3"
 
-.\" This is Comment
-.\".tl 'INTERNET-DRAFT'DA MIDDLE'b3yc0d3'
+//This is Comment
 
-.tl 'Expires: 2023/05/25''2022/05/25'
+.tl 'Author:''$(AUTHOR)'
 
+/**
 .el 1
-
 .tl ''Middle text''
-
-.el 1
+.el 1*/
 
 .ce 5
 Text center 1
