@@ -25,7 +25,7 @@ void Lexer::dumpTmpStr()
     if (this->tmpStr != "")
     {
         // check if Temporeral String is only Numbers
-        if (txtutil::isNumber(this->tmpStr))
+        if (txtutil::isNumeric(this->tmpStr))
         {
             this->add(TokenType::Number, this->tmpStr);
             // IMPORTANT! clear Temporeral String

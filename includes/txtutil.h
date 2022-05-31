@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 #include <algorithm>
+#include <regex>
+#include "registers.hpp"
 
 namespace txtutil
 {
@@ -16,7 +18,7 @@ namespace txtutil
      *
      * @see https://stackoverflow.com/a/4654718
      */
-    bool isNumber(const std::string &iText);
+    bool isNumeric(const std::string &iText);
 
     /**
      * @brief Text to lower case
@@ -25,6 +27,14 @@ namespace txtutil
      * @return std::string
      */
     std::string str2lower(std::string iText);
+
+    /**
+     * @brief Text to upper case
+     * 
+     * @param text Input Text
+     * @return std::string 
+     */
+    std::string str2upper(std::string text);
 
     // ##########################################
 
@@ -60,7 +70,7 @@ namespace txtutil
      * @param length Line Length
      * @return std::string 
      */
-    std::string title3Part(const std::string parts[3], unsigned int length);
+    std::string title3Part(const std::vector<std::string> parts, unsigned int length);
 
     // ##########################################
 
@@ -102,6 +112,15 @@ namespace txtutil
      * @return false
      */
     bool strswi(const std::string &var, const std::string &text);
+
+    /**
+     * @brief Replaces Placeholders with its Value
+     * 
+     * @param text Input Text
+     * @param reg Class of Register
+     * @return std::string 
+     */
+    std::string placeholderInsertValue(std::string text, Register *reg);
 }
 
 #endif

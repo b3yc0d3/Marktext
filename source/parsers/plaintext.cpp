@@ -10,10 +10,11 @@ constexpr unsigned int str2int(const char *str, int h = 0)
 
 PlaintextParser::PlaintextParser()
 {
-    this->storage = new Storage();
+    this->regi = new Register();
     this->isBoL = true;
 
-    this->storage->lineLength = 72;
+    this->regi->insert("LL", 72);
+    this->regi->insert("INDENT", 3);
 }
 
 void PlaintextParser::next()
@@ -93,7 +94,7 @@ std::string PlaintextParser::getCompleteLine()
         }
     }
 
-    return buffer;
+    return txtutil::placeholderInsertValue(buffer, this->regi);
 }
 
 void PlaintextParser::nextLine()
@@ -150,7 +151,7 @@ std::string PlaintextParser::getTill(TokenType token)
         }
     }
 
-    return buffer;
+    return txtutil::placeholderInsertValue(buffer, this->regi);
 }
 
 void PlaintextParser::appendTmpParagraph(const std::string &value)
@@ -167,12 +168,12 @@ void PlaintextParser::appendTmpParagraph(const std::string &value)
 
 void PlaintextParser::dumpTmpParagraph()
 {
-    unsigned int lineLengthIndented = this->storage->lineLength - this->storage->indent;
+    unsigned int lineLengthIndented = this->regi->get<int>("LL", 72) - this->regi->get<int>("INDENT", 3);
     std::vector<std::string> lines = txtutil::split_str(txtutil::word_wrap(this->tmpParagraph, lineLengthIndented), "\n");
 
     for (std::string &line : lines)
     {
-        this->document.append(txtutil::repeat(" ", this->storage->indent) + line + "\n");
+        this->document.append(txtutil::repeat(" ", this->regi->get<int>("INDENT", 3)) + line + "\n");
     }
 
     // clear 'tmpParagraph'
@@ -190,11 +191,15 @@ std::string PlaintextParser::parse(std::vector<Token> &tokens)
     this->index = 0;
     this->cur_token = this->tokens[this->index];
     unsigned int lineBreaks = 0;
+    bool isParagraph = false;
 
     while (this->cur_token.value != "NULL")
     {
 
-        if (this->cType() == TokenType::Solidus)
+        // check if it is a comment
+        switch (this->cType())
+        {
+        case Solidus:
         {
             switch (this->peek().type)
             {
@@ -221,7 +226,6 @@ std::string PlaintextParser::parse(std::vector<Token> &tokens)
                         this->next();
                     }
                 }
-                printf("D] COMMENT BLOCK\n");
             }
             break;
 
@@ -231,6 +235,14 @@ std::string PlaintextParser::parse(std::vector<Token> &tokens)
             }
             break;
             }
+        }
+        break;
+
+            // TODO: variable use aka. $(NAME)
+            // https://coliru.stacked-crooked.com/a/3902146ee704c4fe
+
+        default:
+            break;
         }
 
         // Check if it's Begin of Line and if it's a FullStop ('.')
@@ -269,16 +281,25 @@ std::string PlaintextParser::parse(std::vector<Token> &tokens)
                 }
 
                 this->next();
-                std::string vValue = this->getCompleteLine();
+                std::string vValue;
 
-                if (vIdentifier == "LL")
+                if (this->cType() == TokenType::QuotationMark)
                 {
-                    this->storage->lineLength = atoi(vValue.c_str());
+                    this->next();
+                    vValue = this->getTill(TokenType::QuotationMark);
                 }
                 else
                 {
-                    // Add variable to storage
-                    this->storage->setRegister(vIdentifier, vValue);
+                    vValue = this->getCompleteLine();
+                }
+
+                if (txtutil::isNumeric(vValue))
+                {
+                    this->regi->insert(txtutil::str2upper(vIdentifier), std::stoi(vValue));
+                }
+                else
+                {
+                    this->regi->insert(txtutil::str2upper(vIdentifier), vValue);
                 }
             }
             break;
@@ -286,6 +307,7 @@ std::string PlaintextParser::parse(std::vector<Token> &tokens)
             // title [.tl 'LEFT'CENTER'RIGHT']
             case str2int("tl"):
             {
+                std::vector<std::string> parts;
                 // dump 'tmpParagraph'
                 // this->dumpTmpParagraph();
 
@@ -305,7 +327,7 @@ std::string PlaintextParser::parse(std::vector<Token> &tokens)
 
                 // GET "LEFT" PART
                 this->next();
-                std::string part0 = this->getTill(TokenType::Apostrophe);
+                parts.push_back(this->getTill(TokenType::Apostrophe));
 
                 if (this->cType() != TokenType::Apostrophe)
                 {
@@ -315,7 +337,7 @@ std::string PlaintextParser::parse(std::vector<Token> &tokens)
 
                 // GET "CENTER" PART
                 this->next();
-                std::string part1 = this->getTill(TokenType::Apostrophe);
+                parts.push_back(this->getTill(TokenType::Apostrophe));
 
                 if (this->cType() != TokenType::Apostrophe)
                 {
@@ -325,7 +347,7 @@ std::string PlaintextParser::parse(std::vector<Token> &tokens)
 
                 // GET "RIGHT" PART
                 this->next();
-                std::string part2 = this->getTill(TokenType::Apostrophe);
+                parts.push_back(this->getTill(TokenType::Apostrophe));
 
                 if (this->cType() != TokenType::Apostrophe)
                 {
@@ -333,9 +355,7 @@ std::string PlaintextParser::parse(std::vector<Token> &tokens)
                     exit(EXIT_FAILURE);
                 }
 
-                std::string parts[3] = {part0, part1, part2};
-
-                this->document.append(txtutil::title3Part(parts, this->storage->lineLength));
+                this->document.append(txtutil::title3Part(parts, this->regi->get<int>("LL", 72)));
                 this->document.append("\n");
             }
             break;
@@ -355,9 +375,9 @@ std::string PlaintextParser::parse(std::vector<Token> &tokens)
                 }
 
                 this->nextLine();
-                for (int i = 0; i < lineCount; i++)
+                for (unsigned int i = 0; i < lineCount; i++)
                 {
-                    this->document.append(txtutil::center(this->getCompleteLine(), " ", this->storage->lineLength) + "\n");
+                    this->document.append(txtutil::center(this->getCompleteLine(), " ", this->regi->get<int>("LL", 72)) + "\n");
                     this->next();
                 }
             }
@@ -378,7 +398,7 @@ std::string PlaintextParser::parse(std::vector<Token> &tokens)
                     }
                 }
 
-                for (int i = 0; i < eLines; i++)
+                for (unsigned int i = 0; i < eLines; i++)
                 {
                     this->document.append("\n");
                 }
@@ -401,5 +421,5 @@ std::string PlaintextParser::parse(std::vector<Token> &tokens)
 
 PlaintextParser::~PlaintextParser()
 {
-    delete this->storage;
+    delete this->regi;
 }

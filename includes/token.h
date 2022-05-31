@@ -15,9 +15,11 @@ enum TokenType
     DollarSign,         // $
     FullStop,           // .
     LeftCurlyBracket,   // {    [not used yet]
+    LParenthesis,       // (
     Number,             // 0-9
     QuotationMark,      // "
     ReverseSolidus,     // "\"
+    RParenthesis,       // )
     Solidus,            // /
     RightCurlyBracket,  // }    [not used yet]
     Text,               // Everything thats not listed here

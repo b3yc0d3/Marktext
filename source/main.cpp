@@ -204,10 +204,10 @@ int main(int argc, char **argv)
     {
         std::unique_ptr<PlaintextParser> ptParser = std::make_unique<PlaintextParser>();
         document = ptParser->parse(tokens);
+        std::cout << txtutil::repeat("#", ptParser->regi->get<int>("LL", 72));
     }
 
-    std::cout << txtutil::repeat("#", 72)
-              << "\n"
+    std::cout << "\n"
               << document << "\n";
 
     return 0;

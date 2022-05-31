@@ -4,7 +4,7 @@
 
 namespace txtutil
 {
-    bool isNumber(const std::string &iText)
+    bool isNumeric(const std::string &iText)
     {
         return !iText.empty() && std::find_if(iText.begin(), iText.end(), [](unsigned char c)
                                               { return !std::isdigit(c); }) == iText.end();
@@ -18,6 +18,16 @@ namespace txtutil
         }
 
         return iText;
+    }
+
+    std::string str2upper(std::string text)
+    {
+        for(char &c : text)
+        {
+            c = toupper(c);
+        }
+
+        return text;
     }
 
     std::string repeat(const std::string &input, unsigned int num)
@@ -50,7 +60,7 @@ namespace txtutil
 
             buffer.append(repeat(fChar, padding));
             buffer.append(part);
-            //buffer.append(repeat(fChar, padding));
+            // buffer.append(repeat(fChar, padding));
 
             if (buffer.length() > length)
             {
@@ -64,7 +74,7 @@ namespace txtutil
         return retStr;
     }
 
-    std::string title3Part(const std::string parts[3], unsigned int length)
+    std::string title3Part(const std::vector<std::string> parts, unsigned int length)
     {
         std::string buffer = center(parts[1], " ", length);
 
@@ -136,5 +146,23 @@ namespace txtutil
     bool strswi(const std::string &var, const std::string &text)
     {
         return (var.rfind(text, 0) == 0);
+    }
+
+    std::string placeholderInsertValue(std::string text, Register *reg)
+    {
+        std::regex regexPlaceholder("\\$\\(([A-Z_]+)\\)");
+        std::smatch matches;
+        std::string buffer = text;
+
+        while (std::regex_search(text, matches, regexPlaceholder))
+        {
+            std::regex exp1("\\$\\(" + matches[1].str() + "\\)");
+
+            buffer = std::regex_replace(buffer, exp1, reg->getStr(matches[1].str()));
+
+            text = matches.suffix();
+        }
+
+        return buffer;
     }
 }

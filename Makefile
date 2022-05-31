@@ -3,6 +3,7 @@ SHELL 		:= /bin/sh
 CXX 		= g++
 CXXFLAGS	= -std=c++17 -Wall -Wextra -pedantic
 LIBFLAGS	=
+EXEC_NAME	= mt
 
 SRC_DIR		= source
 INCL_DIR	= includes
@@ -15,11 +16,11 @@ SRC_FILES = $(call rwildcard,$(SRC_DIR),*.cpp)
 
 marktext:
 	mkdir -p $(BUILD_DIR)
-	$(CXX) $(CXXFLAGS) $(LIBFLAGS) -o $(BUILD_DIR)/mtt $(SRC_FILES)
+	$(CXX) $(CXXFLAGS) $(LIBFLAGS) -o $(BUILD_DIR)/$(EXEC_NAME) $(SRC_FILES)
 
 debug:
 	mkdir -p $(BUILD_DIR)
-	$(CXX) -g $(CXXFLAGS) $(LIBFLAGS) -o $(BUILD_DIR)/mtt $(SRC_FILES)
+	$(CXX) -g $(CXXFLAGS) $(LIBFLAGS) -o $(BUILD_DIR)/$(EXEC_NAME) $(SRC_FILES)
 
 valgrind:
-	valgrind --leak-check=yes $(BUILD_DIR)/mtt
+	valgrind --leak-check=yes $(BUILD_DIR)/$(EXEC_NAME)

@@ -14,7 +14,7 @@ Can be exported to:
   - ~~Markdown~~
 
 ## Extensions
-Visual Studio Code<br>
+[Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=b3yc0d3.marktext)<br>
 [![VSC Extension](https://img.shields.io/visual-studio-marketplace/i/b3yc0d3.marktext)](https://marketplace.visualstudio.com/items?itemName=b3yc0d3.marktext)
 [![VSC Extension Version](https://img.shields.io/visual-studio-marketplace/v/b3yc0d3.marktext)]((https://marketplace.visualstudio.com/items?itemName=b3yc0d3.marktext))
 

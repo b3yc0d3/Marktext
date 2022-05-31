@@ -1,9 +1,10 @@
-.nr LL 72
 .nr AUTHOR "b3y0cd3"
+.nr LL 72
 
 //This is Comment
 
 .tl 'Author:''$(AUTHOR)'
+.tl 'LL''$(LL)$(AUTHOR)'
 
 /**
 .el 1

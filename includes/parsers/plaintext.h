@@ -3,16 +3,13 @@
 
 #include <vector>
 #include <memory>
-#include "../storage.h"
 #include "../token.h"
+#include "../registers.hpp"
 
 class PlaintextParser
 {
 private:
     std::vector<Token> tokens;
-    // Storage for all Registers and Variable that
-    // the user can create
-    Storage *storage;
 
     Token cur_token;
     bool isBoL; // True if Begon of Line
@@ -21,6 +18,10 @@ private:
     std::string tmpParagraph;
 
 public:
+    // Storage for all Registers and Variable that
+    // the user can create
+    Register *regi;
+
     PlaintextParser();
 
     /**
