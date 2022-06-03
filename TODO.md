@@ -6,6 +6,6 @@
 - [ ] Optimize Build Process & Build Speed
 
 **Parser**
-- [ ] Parser for Plaintext (ITEF flavored)
+- [X] Parser for Plaintext (ITEF flavored)
 - [ ] Parser for HTML
 - [ ] Parser for Markdown

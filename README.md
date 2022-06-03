@@ -13,6 +13,18 @@ Can be exported to:
   - ~~HTML~~
   - ~~Markdown~~
 
+## Usage
+```yaml
+Usage: mtt [options] <INPUT_FILE_PATH>
+Options:
+   -F <text>         Set the output format (default: text).
+   --version         Shows this message.
+   --help            Shows version of Marktext.
+
+Positional Arguments:
+   INPUT_FILE_PATH   File path to Input file.
+```
+
 ## Extensions
 [Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=b3yc0d3.marktext)<br>
 [![VSC Extension](https://img.shields.io/visual-studio-marketplace/i/b3yc0d3.marktext)](https://marketplace.visualstudio.com/items?itemName=b3yc0d3.marktext)

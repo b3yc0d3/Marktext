@@ -11,6 +11,7 @@
 #include <memory>
 #include <vector>
 #include <fstream>
+#include <sys/stat.h>
 // Utils
 #include "../includes/lexer.h"
 #include "../includes/txtutil.h"
@@ -116,17 +117,40 @@ void print_usage()
 {
     std::cout << "Usage: mtt [options] <INPUT_FILE_PATH>\n"
               << "Options:\n"
-              << "   -F <pt>           Set the output format.\n"
+              << "   -F <text>         Set the output format (default: text).\n"
               << "   --version         Shows this message.\n"
               << "   --help            Shows version of Marktext.\n\n"
-              << "Positional Patameter:\n"
+              << "Positional Arguments:\n"
               << "   INPUT_FILE_PATH   File path to Input file."
               << "\n";
+}
+
+/**
+ * @brief Check if file exists
+ *
+ * @param name File Path
+ * @return true
+ * @return false
+ *
+ * @see https://stackoverflow.com/a/12774387
+ */
+inline bool fExists(const std::string &name)
+{
+    struct stat buffer;
+    return (stat(name.c_str(), &buffer) == 0);
+}
+
+// copied in here because i'm so dumb
+constexpr unsigned int str2int(const char *str, int h = 0)
+{
+    return !str[h] ? 5381 : (str2int(str, h + 1) * 33) ^ str[h];
 }
 
 int main(int argc, char **argv)
 {
     const char *filePath;
+    std::string outputFormat = "text";
+
     // TODO: Command line Arguments
     if (DEBUG)
     {
@@ -174,20 +198,59 @@ int main(int argc, char **argv)
                   << VERSION_PATCH
                   << "-"
                   << VERSION_PRE_RELEASE
+                  << "\n"
+                  << "Source: https://github.com/b3yc0d3/marktext"
                   << "\n";
 
         exit(EXIT_SUCCESS);
     }
-
-    if (txtutil::vector_contains<std::string>(args, "--help"))
+    else if (txtutil::vector_contains<std::string>(args, "--help"))
     {
         print_usage();
         exit(EXIT_SUCCESS);
     }
 
-    if (!txtutil::strswi(args.back().c_str(), "-"), !txtutil::strswi(args.back().c_str(), "--"))
+    if (!(txtutil::strswi(args.back().c_str(), "-") || txtutil::strswi(args.back().c_str(), "--")))
     {
         filePath = args.back().c_str();
+    }
+    else
+    {
+        std::cout << "error: positional argument 'INPUT_FILE_PATH' missing"
+                  << "\n\n";
+
+        print_usage();
+        exit(EXIT_FAILURE);
+    }
+
+    for (size_t i = 0; i < args.size(); i++)
+    {
+        std::string arg = args[i];
+
+        if (arg == "-F")
+        {
+            if ((i + 1) < args.size())
+            {
+                outputFormat = args[i + 1];
+                i++;
+            }
+            else
+            {
+                std::cout << "error: missing value of argument '-F'\n";
+                print_usage();
+                exit(EXIT_FAILURE);
+            }
+        }
+    }
+
+    if (!fExists(filePath))
+    {
+        std::cout << "error: can not read file\n"
+                  << "   "
+                  << filePath
+                  << "\n";
+
+        exit(EXIT_FAILURE);
     }
 
     std::fstream in(filePath);
@@ -201,10 +264,27 @@ int main(int argc, char **argv)
         tokens = lexer->run(fContents);
     }
 
+    switch (str2int(outputFormat.c_str()))
     {
-        std::unique_ptr<PlaintextParser> ptParser = std::make_unique<PlaintextParser>();
-        document = ptParser->parse(tokens);
-        std::cout << txtutil::repeat("#", ptParser->regi->get<int>("LL", 72));
+    case str2int("text"):
+    {
+        {
+            std::unique_ptr<PlaintextParser> ptParser = std::make_unique<PlaintextParser>();
+            document = ptParser->parse(tokens);
+            std::cout << txtutil::repeat("#", ptParser->regi->get<int>("LL", 72));
+        }
+    }
+    break;
+
+    default:
+    {
+        std::cout << "error: unkown output format '"
+                  << outputFormat
+                  << "'\n";
+        print_usage();
+        exit(EXIT_FAILURE);
+    }
+    break;
     }
 
     std::cout << "\n"

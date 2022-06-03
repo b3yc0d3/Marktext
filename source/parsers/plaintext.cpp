@@ -168,16 +168,21 @@ void PlaintextParser::appendTmpParagraph(const std::string &value)
 
 void PlaintextParser::dumpTmpParagraph()
 {
-    unsigned int lineLengthIndented = this->regi->get<int>("LL", 72) - this->regi->get<int>("INDENT", 3);
-    std::vector<std::string> lines = txtutil::split_str(txtutil::word_wrap(this->tmpParagraph, lineLengthIndented), "\n");
-
-    for (std::string &line : lines)
+    if (this->tmpParagraph != "")
     {
-        this->document.append(txtutil::repeat(" ", this->regi->get<int>("INDENT", 3)) + line + "\n");
-    }
+        unsigned int lineLengthIndented = this->regi->get<int>("LL", 72) - this->regi->get<int>("INDENT", 3);
+        std::vector<std::string> lines = txtutil::split_str(txtutil::word_wrap(this->tmpParagraph, lineLengthIndented), "\n");
 
-    // clear 'tmpParagraph'
-    this->tmpParagraph.clear();
+        this->document.append("\n");
+
+        for (std::string &line : lines)
+        {
+            this->document.append(txtutil::repeat(" ", this->regi->get<int>("INDENT", 3)) + line + "\n");
+        }
+
+        // clear 'tmpParagraph'
+        this->tmpParagraph.clear();
+    }
 }
 
 /**
@@ -255,8 +260,7 @@ std::string PlaintextParser::parse(std::vector<Token> &tokens)
             // declare and set register value [.dv <IDENTIFIER> <VALUE>]
             case str2int("nr"):
             {
-                // dump 'tmpParagraph'
-                // this->dumpTmpParagraph();
+                this->dumpTmpParagraph();
 
                 this->next();
                 if (this->cType() != TokenType::Whitespace)
@@ -307,9 +311,8 @@ std::string PlaintextParser::parse(std::vector<Token> &tokens)
             // title [.tl 'LEFT'CENTER'RIGHT']
             case str2int("tl"):
             {
+                this->dumpTmpParagraph();
                 std::vector<std::string> parts;
-                // dump 'tmpParagraph'
-                // this->dumpTmpParagraph();
 
                 this->next();
                 if (this->cType() != TokenType::Whitespace)
@@ -363,8 +366,10 @@ std::string PlaintextParser::parse(std::vector<Token> &tokens)
             // center [.ce <NUMBER>]
             case str2int("ce"):
             {
-                unsigned int lineCount = 1;
+                this->dumpTmpParagraph();
                 this->next();
+
+                unsigned int lineCount = 1;
                 if (this->cType() == TokenType::Whitespace)
                 {
                     this->next();
@@ -386,6 +391,7 @@ std::string PlaintextParser::parse(std::vector<Token> &tokens)
             // empty lines [.el <?NUMBER>]
             case str2int("el"):
             {
+                this->dumpTmpParagraph();
                 this->next();
 
                 unsigned int eLines = 1;
@@ -405,9 +411,84 @@ std::string PlaintextParser::parse(std::vector<Token> &tokens)
             }
             break;
 
+            // paragraph [.ph CRLF <VALUE>]
+            case str2int("ph"):
+            {
+                this->nextLine();
+                this->dumpTmpParagraph();
+                bool doIt = true;
+
+                while (doIt)
+                {
+                    if ((this->cType() == TokenType::CRLF && this->peek().type == TokenType::CRLF) || this->cValue() == "NULL")
+                    {
+                        doIt = false;
+                    }
+                    else if (!(this->cType() == TokenType::FullStop && this->isBoL))
+                    {
+                        if (this->cType() == TokenType::CRLF)
+                        {
+                            this->appendTmpParagraph(" ");
+                        }
+                        else
+                        {
+                            this->appendTmpParagraph(this->cValue());
+                        }
+                    }
+
+                    this->next();
+                }
+            }
+            break;
+
+            // header [.hr <?NUMBER>]
+            case str2int("hr"):
+            {
+                this->dumpTmpParagraph();
+                this->next();
+
+                unsigned int level = 1;
+                if (this->cType() == TokenType::Whitespace)
+                {
+                    this->next();
+                    if (this->cType() == TokenType::Number)
+                    {
+                        level = std::stoi(this->cValue());
+                    }
+                }
+
+                this->nextLine();
+                std::string text = this->getCompleteLine();
+
+                this->document.append("\n" + text + "\n");
+
+                switch (level)
+                {
+                case 0:
+                case 1:
+                {
+                    this->document.append(txtutil::repeat("=", text.size()) + "\n");
+                }
+                break;
+
+                case 2:
+                {
+                    this->document.append(txtutil::repeat("-", text.size()) + "\n");
+                }
+                break;
+
+                default:
+                {
+                    // tought of ~ as an underline
+                }
+                break;
+                }
+        
+            }
+            break;
+
             default:
             {
-                // this->appendTmpParagraph(this->cValue());
             }
             break;
             }
@@ -415,6 +496,9 @@ std::string PlaintextParser::parse(std::vector<Token> &tokens)
 
         this->next();
     }
+
+    // just in cas if it isn't empty
+    this->dumpTmpParagraph();
 
     return this->document;
 }

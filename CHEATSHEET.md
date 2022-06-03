@@ -34,7 +34,7 @@ if a value type is prefixed by an questionmark, then the Value is Optional. e.g.
     <tr>
       <td>.ph<br>&lt;VALUE&gt;</td>
       <td>Creates a paragraph</td>
-      <td style="text-align: center;">Not Yet</td>
+      <td style="text-align: right;">0.2.3-alpha</td>
     </tr>
     <tr>
       <td>.tl '&lt;VALUE&gt;'&lt;VALUE&gt;'&lt;VALUE&gt;'</td>
@@ -42,8 +42,21 @@ if a value type is prefixed by an questionmark, then the Value is Optional. e.g.
       <td style="text-align: right;">0.1.1-alpha</td>
     </tr>
     <tr>
-      <td>.\"&lt;VALUE&gt;</td>
+      <td>.hr &lt;NUMBER?&gt;</td>
+      <td>Creates a Header (1-3)</td>
+      <td style="text-align: right;">0.2.3-alpha</td>
+    </tr>
+    <tr>
+      <td colspan="3" style="text-align: left;">Comments</d>
+    </tr>
+    <tr>
+      <td>.//&lt;VALUE&gt;</td>
       <td>Creates a Comment, text will not be included in exported Document</td>
+      <td style="text-align: right;">0.1.1-alpha</td>
+    </tr>
+    <tr>
+      <td>./**<br>&lt;VALUE&gt;<br>*/</td>
+      <td>Creates a Multi Line Comment, text will not be included in exported Document</td>
       <td style="text-align: right;">0.1.1-alpha</td>
     </tr>
 </tbody>
@@ -71,7 +84,7 @@ if a value type is prefixed by an questionmark, then the Value is Optional. e.g.
     <td>INDENT</td>
     <td>Number</td>
     <td>Sets the depth of Idents (e.g. for Paragraphs or Lists)</td>
-    <td>Not Yet</td>
+    <td style="text-align: right;">0.1.1-alpha</td>
   </tr>
 </tbody>
 </table>
