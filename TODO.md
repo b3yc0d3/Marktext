@@ -1,5 +1,5 @@
 ### Marktext Typeset Functions
-- [ ] Command Line Options
+- [X] Command Line Options
 - [X] Lexer
 - [ ] Error Handling
 - [ ] Error Messages

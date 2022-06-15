@@ -9,7 +9,7 @@
 
 static const unsigned VERSION_MAJOR = 0;
 static const unsigned VERSION_MINOR = 2;
-static const unsigned VERSION_PATCH = 3;
+static const unsigned VERSION_PATCH = 4;
 static const char *VERSION_PRE_RELEASE = "alpha";
 
 #endif

@@ -1,0 +1,33 @@
+List of maintainers of Marktext
+===============================
+
+Description of entrys
+---------------------
+
+    M: *Mail* patches: Username <address@domain>
+    W: *Website* with status and or informations.
+    S: *Status*, one of the following:
+       Orphan:       Does not have a maintainer.
+       Maintained:   Someone looks regulary after it's code
+                     (like a loveing pet owner).
+    F: *Files* wildcard list of maintained files.
+       A trailing slash followed by a asterisk includes all files
+       and subdirectory files.
+
+
+Maintainers list
+----------------
+
+    NOTE: please keep this list in alphabetical order
+
+LEXER
+M:     b3yc0d3 <b3yc0d3@gmail.com>
+S:     Maintained
+F:     includes/lexer.h
+F:     source/lexer.cpp
+
+PLAINTEXT PARSER
+M:     b3yc0d3 <b3yc0d3@gmail.com>
+S:     Maintained
+F:     includes/parsers/plaintext.h
+F:     source/parsers/plaintext.cpp

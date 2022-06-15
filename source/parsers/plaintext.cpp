@@ -42,11 +42,11 @@ void PlaintextParser::next()
     }
 }
 
-Token PlaintextParser::peek()
+Token PlaintextParser::peek(int l = 1)
 {
-    if ((this->index + 1) < this->tokens.size())
+    if ((this->index + l) < this->tokens.size())
     {
-        return this->tokens[this->index + 1];
+        return this->tokens[this->index + l];
     }
     else
     {
@@ -170,13 +170,14 @@ void PlaintextParser::dumpTmpParagraph()
 {
     if (this->tmpParagraph != "")
     {
-        unsigned int lineLengthIndented = this->regi->get<int>("LL", 72) - this->regi->get<int>("INDENT", 3);
-        std::vector<std::string> lines = txtutil::split_str(txtutil::word_wrap(this->tmpParagraph, lineLengthIndented), "\n");
+        int lineLengthIndented = this->regi->get<int>("LL", 72) - this->regi->get<int>("INDENT", 3);
+        std::vector<std::string> lines = txtutil::split_str(txtutil::word_wrap(txtutil::placeholderInsertValue(this->tmpParagraph, this->regi), lineLengthIndented), "\n");
 
-        this->document.append("\n");
+        // this->document.append("\n");
 
         for (std::string &line : lines)
         {
+            // printf(std::string(line).c_str());
             this->document.append(txtutil::repeat(" ", this->regi->get<int>("INDENT", 3)) + line + "\n");
         }
 
@@ -195,8 +196,6 @@ std::string PlaintextParser::parse(std::vector<Token> &tokens)
     // Set first Token
     this->index = 0;
     this->cur_token = this->tokens[this->index];
-    unsigned int lineBreaks = 0;
-    bool isParagraph = false;
 
     while (this->cur_token.value != "NULL")
     {
@@ -417,23 +416,19 @@ std::string PlaintextParser::parse(std::vector<Token> &tokens)
                 this->nextLine();
                 this->dumpTmpParagraph();
                 bool doIt = true;
+                std::string tmpLine = "";
 
                 while (doIt)
                 {
+                    // check if the Paragraph end is reached (or end of file aka cValue == NULL)
+                    //if (this->cValue() == "NULL" || (this->isBoL && this->peek().type == TokenType::FullStop))
                     if ((this->cType() == TokenType::CRLF && this->peek().type == TokenType::CRLF) || this->cValue() == "NULL")
                     {
                         doIt = false;
                     }
                     else if (!(this->cType() == TokenType::FullStop && this->isBoL))
                     {
-                        if (this->cType() == TokenType::CRLF)
-                        {
-                            this->appendTmpParagraph(" ");
-                        }
-                        else
-                        {
-                            this->appendTmpParagraph(this->cValue());
-                        }
+                        this->appendTmpParagraph(this->cValue());
                     }
 
                     this->next();
@@ -467,23 +462,70 @@ std::string PlaintextParser::parse(std::vector<Token> &tokens)
                 case 0:
                 case 1:
                 {
-                    this->document.append(txtutil::repeat("=", text.size()) + "\n");
+                    this->document.append(txtutil::repeat("=", text.size()) + "\n\n");
                 }
                 break;
 
                 case 2:
                 {
-                    this->document.append(txtutil::repeat("-", text.size()) + "\n");
+                    this->document.append(txtutil::repeat("-", text.size()) + "\n\n");
                 }
                 break;
 
                 default:
                 {
-                    // tought of ~ as an underline
+                    this->document.append("\n");
                 }
                 break;
                 }
-        
+            }
+            break;
+
+            // not formatted [.nf CRLF <VALUE>]
+            case str2int("nf"):
+            {
+                this->nextLine();
+                this->dumpTmpParagraph();
+                bool doIt = true;
+                std::string tmp = "";
+
+                while (doIt)
+                {
+                    // check if the end is reached (or end of file aka cValue == NULL)
+                    if (this->cValue() == "NULL" || (this->isBoL && this->peek().type == TokenType::FullStop))
+                    {
+                        doIt = false;
+                    }
+                    else
+                    {
+                        tmp.append(this->cValue());
+                    }
+
+                    this->next();
+                }
+
+                int lineLengthIndented = this->regi->get<int>("LL", 72) - this->regi->get<int>("INDENT", 3);
+                // replace all value placeholder contained in text
+                std::vector<std::string> lines = txtutil::split_str(txtutil::placeholderInsertValue(tmp, this->regi), "\n");
+
+                for (std::string &line : lines)
+                {
+                    if (line.length() > lineLengthIndented)
+                    {
+                        std::vector<std::string> lines2 = txtutil::split_str(txtutil::word_wrap(line, lineLengthIndented), "\n");
+
+                        for (std::string &line2 : lines2)
+                        {
+                            this->document.append(txtutil::repeat(" ", this->regi->get<int>("INDENT", 3)) + line2 + "\n");
+                        }
+                    }
+                    else
+                    {
+                        this->document.append(txtutil::repeat(" ", this->regi->get<int>("INDENT", 3)) + line + "\n");
+                    }
+                }
+
+                tmp.clear();
             }
             break;
 

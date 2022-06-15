@@ -35,7 +35,7 @@ public:
      * 
      * @return Token 
      */
-    Token peek();
+    Token peek(int l);
 
     /**
      * @brief Get value of Current Token

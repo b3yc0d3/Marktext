@@ -1,3 +1,9 @@
+/**
+ * Contains everything that has something todo
+ * with converting from type X to string or
+ * formatting strings.
+*/
+
 #ifndef MARKTEXT_TXTUTIL_H
 #define MARKTEXT_TXTUTIL_H
 
@@ -9,6 +15,29 @@
 
 namespace txtutil
 {
+    /**
+     * @brief Converts TokenType to String
+     *
+     */
+    const std::string tType2str[16] = {
+        "Apostrophe",
+        "Asterisk",
+        "CRLF",
+        "DollarSign",
+        "FullStop",
+        "LeftCurlyBracket",
+        "LParenthesis",
+        "Number",
+        "QuotationMark",
+        "ReverseSolidus",
+        "RParenthesis",
+        "Solidus",
+        "RightCurlyBracket",
+        "Text",
+        "Tilde",
+        "Whitespace",
+    };
+
     /**
      * @brief Checks if String only contains Numbers
      *
@@ -30,9 +59,9 @@ namespace txtutil
 
     /**
      * @brief Text to upper case
-     * 
+     *
      * @param text Input Text
-     * @return std::string 
+     * @return std::string
      */
     std::string str2upper(std::string text);
 
@@ -63,12 +92,12 @@ namespace txtutil
 
     /**
      * @brief Create Title
-     * 
+     *
      * e.g.: "Left text                     Center text                     Right Text"
-     * 
+     *
      * @param parts Parts
      * @param length Line Length
-     * @return std::string 
+     * @return std::string
      */
     std::string title3Part(const std::vector<std::string> parts, unsigned int length);
 
@@ -115,10 +144,10 @@ namespace txtutil
 
     /**
      * @brief Replaces Placeholders with its Value
-     * 
+     *
      * @param text Input Text
      * @param reg Class of Register
-     * @return std::string 
+     * @return std::string
      */
     std::string placeholderInsertValue(std::string text, Register *reg);
 }

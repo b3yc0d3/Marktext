@@ -47,6 +47,11 @@ if a value type is prefixed by an questionmark, then the Value is Optional. e.g.
       <td style="text-align: right;">0.2.3-alpha</td>
     </tr>
     <tr>
+      <td>.nf<br>&lt;VALUE&gt;</td>
+      <td>Creates Paragraph like text but without Automatic line break</td>
+      <td style="text-align: right;">0.2.4-alpha</td>
+    </tr>
+    <tr>
       <td colspan="3" style="text-align: left;">Comments</d>
     </tr>
     <tr>

@@ -1,7 +1,7 @@
 /*
  * @file main.cpp
  * @author b3yc0d3
- * @brief Main file of Maketext
+ * @brief Main file of Marketext
  * @date Sun May 15 2022
  *
  * @copyright See LICENSE file in the source tree.
@@ -21,97 +21,6 @@
 
 #define DEBUG false
 
-/**
- * @brief Converts Token Type to String
- *
- * @param tType
- * @return const std::string&
- */
-const std::string tType2Str(const TokenType &tType)
-{
-    std::string retStr;
-
-    switch (tType)
-    {
-    case TokenType::Apostrophe:
-    {
-        return "Apostrophe";
-    }
-    break;
-
-    case TokenType::CRLF:
-    {
-        return "CRLF";
-    }
-    break;
-
-    case TokenType::DollarSign:
-    {
-        return "DollarSign";
-    }
-    break;
-
-    case TokenType::FullStop:
-    {
-        return "FullStop";
-    }
-    break;
-
-    case TokenType::LeftCurlyBracket:
-    {
-        return "LeftCurlyBracket";
-    }
-    break;
-
-    case TokenType::Number:
-    {
-        return "Number";
-    }
-    break;
-
-    case TokenType::QuotationMark:
-    {
-        return "QuotationMark";
-    }
-    break;
-
-    case TokenType::ReverseSolidus:
-    {
-        return "ReverseSolidus";
-    }
-    break;
-
-    case TokenType::RightCurlyBracket:
-    {
-        return "RightCurlyBracket";
-    }
-    break;
-
-    case TokenType::Text:
-    {
-        return "Text";
-    }
-    break;
-
-    case TokenType::Tilde:
-    {
-        return "Tilde";
-    }
-    break;
-
-    case TokenType::Whitespace:
-    {
-        return "Whitespace";
-    }
-    break;
-
-    default:
-    {
-        return "Unkown";
-    }
-    break;
-    }
-}
 
 void print_usage()
 {
