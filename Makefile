@@ -28,7 +28,10 @@ OBJ_FILES	= $(SRC_FILES:.cpp=.o)
 
 .PHONY: clean install test
 
-all: $(EXEC_FILE)
+all: _dir $(EXEC_FILE)
+
+_dir:
+	mkdir -p $(BUILD_DIR)
 
 $(BUILD_DIR)/%.o: $(SRC_FILES)
 	$(CXX) $(CXXFLAGS) -c $^ -o $@
